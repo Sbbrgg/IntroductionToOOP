@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 using namespace std;
 using std::cout;
 using std::cin;
@@ -34,12 +34,12 @@ void main()
 {
 	setlocale(LC_ALL, "");
 #ifdef STRUCT_POINT
-	int a;		//Объявление переменной 'а' типа 'int'
-	Point A;	//Объявление переменной 'А' типа 'Point'
-	//Создание объекта 'А' структуры 'Point'
-	//Создание экземпляра 'А' структуры 'Point'
+	int a;		//РћР±СЉСЏРІР»РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ 'Р°' С‚РёРїР° 'int'
+	Point A;	//РћР±СЉСЏРІР»РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ 'Рђ' С‚РёРїР° 'Point'
+	//РЎРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° 'Рђ' СЃС‚СЂСѓРєС‚СѓСЂС‹ 'Point'
+	//РЎРѕР·РґР°РЅРёРµ СЌРєР·РµРјРїР»СЏСЂР° 'Рђ' СЃС‚СЂСѓРєС‚СѓСЂС‹ 'Point'
 	//'A' is instance of struct 'Point'
-	//Instantiate - создать объект
+	//Instantiate - СЃРѕР·РґР°С‚СЊ РѕР±СЉРµРєС‚
 	A.x = 2;
 	A.y = 3;
 	cout << A.x << "\t" << A.y << endl;
