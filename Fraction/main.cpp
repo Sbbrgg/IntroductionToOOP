@@ -84,7 +84,44 @@ public:
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
-
+	Fraction& operator+=(const Fraction& other)
+	{
+		return *this = *this + other;
+	}
+	Fraction& operator-=(const Fraction& other)
+	{
+		return *this = *this - other;
+	}
+	Fraction& operator*= (const Fraction & other)
+	{
+		return *this = *this * other;
+	}
+	Fraction& operator/=(const Fraction& other)
+	{
+		return *this = *this / other;
+	}
+	Fraction& operator++()
+	{
+		this->integer++;
+		return *this;
+	}
+	Fraction operator++(int)
+	{
+		Fraction old = *this;
+		integer++;
+		return old;
+	}
+	Fraction& operator--()
+	{
+		this->integer--;
+		return *this;
+	}
+	Fraction operator--(int)
+	{
+		Fraction old = *this;
+		integer--;
+		return old;
+	}
 
 	//			Methods:
 	Fraction& to_improper()
@@ -101,6 +138,23 @@ public:
 		numerator %= denominator;
 		return *this;
 	}
+	int gcd(int a, int b) const		//НОД
+	{
+		while (b != 0)
+		{
+			int temp = b;
+			b = a % b;
+			a = temp;
+		}
+		return a;
+	}
+	Fraction& reduce()
+	{
+		int divisor = gcd(numerator, denominator);
+		numerator /= divisor;
+		denominator /= divisor;
+		return *this;
+	}
 	void print()const
 	{
 		if (integer)cout << integer;
@@ -115,7 +169,7 @@ public:
 	}
 };
 
-Fraction operator*(Fraction left,  Fraction right)
+Fraction operator*(Fraction left, Fraction right)
 {
 	left.to_improper();
 	right.to_improper();
@@ -136,6 +190,73 @@ Fraction operator*(Fraction left,  Fraction right)
 		left.get_denominator() * right.get_denominator()
 	).to_proper();
 
+}
+Fraction operator/(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return Fraction
+	(
+		left.get_numerator() * right.get_denominator(),
+		left.get_denominator() * right.get_numerator()
+	).to_proper();
+
+}
+Fraction operator+(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return Fraction
+	(
+		left.get_numerator() * right.get_denominator() + right.get_numerator() * left.get_denominator(),
+		left.get_denominator() * right.get_denominator()
+	).to_proper().reduce();
+}
+Fraction operator-(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return Fraction
+	(
+		left.get_numerator() * right.get_denominator() - right.get_numerator() * left.get_denominator(),
+		left.get_denominator() * right.get_denominator()
+	).to_proper().reduce();
+}
+bool operator==(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return left.get_numerator() * right.get_denominator() == left.get_denominator() * right.get_numerator();
+}
+bool operator!=(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return !(left == right);
+}
+bool operator>(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return left.get_numerator() * right.get_denominator() > left.get_denominator() * right.get_numerator();
+}
+bool operator<(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return left.get_numerator() * right.get_denominator() < left.get_denominator() * right.get_numerator();
+}
+bool operator>=(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return left.get_numerator() * right.get_denominator() >= left.get_denominator() * right.get_numerator();
+}
+bool operator<=(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return left.get_numerator() * right.get_denominator() <= left.get_denominator() * right.get_numerator();
 }
 
 //#define CONSTRUCTORS_CHECK
