@@ -2,6 +2,12 @@
 #include<iostream>
 using namespace std;
 
+class Fraction;
+Fraction operator*(Fraction left, Fraction right);
+Fraction operator/(Fraction left, Fraction right);
+Fraction operator+(Fraction left, Fraction right);
+Fraction operator-(Fraction left, Fraction right);
+
 class Fraction
 {
 	int integer;		//Целая часть
@@ -287,4 +293,5 @@ void main()
 
 	Fraction C = A * B;
 	C.print();
+	
 }
