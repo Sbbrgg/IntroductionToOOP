@@ -138,6 +138,45 @@ Fraction operator*(Fraction left,  Fraction right)
 
 }
 
+bool operator==(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return
+		left.get_numerator() * right.get_denominator() ==
+		right.get_numerator() * left.get_denominator();
+
+}
+bool operator!=(const Fraction& left,const Fraction& right)
+{
+	return !(left == right);
+}
+bool operator>(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return
+		left.get_numerator() * right.get_denominator() >
+		right.get_numerator() * left.get_denominator();
+}
+bool operator<(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return
+		left.get_numerator() * right.get_denominator() <
+		right.get_numerator() * left.get_denominator();
+}
+bool operator>=(Fraction left, Fraction right)
+{
+	return !(left < right);
+	//return left > right || left == right;
+}
+bool operator<=(Fraction left, Fraction right)
+{
+	return !(left > right);
+	//return left < right || left == right;
+}
 //#define CONSTRUCTORS_CHECK
 
 void main()
@@ -159,11 +198,14 @@ void main()
 
 #endif // CONSTRUCTORS_CHECK
 
-	Fraction A(1, 2, 3);
+	/*Fraction A(1, 2, 3);
 	A.print();
 	Fraction B(2, 3, 4);
 	B.print();
 
 	Fraction C = A * B;
-	C.print();
+	C.print();*/
+
+	cout << (2 == 3) << endl;
+	cout << (Fraction(1, 3) <= Fraction(5, 11)) << endl;
 }
