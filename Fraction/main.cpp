@@ -85,6 +85,28 @@ public:
 		return *this;
 	}
 
+	const Fraction& operator++()
+	{
+		integer++;
+		return *this;
+	}
+	const Fraction operator++(int)
+	{
+		Fraction old = *this;
+		integer++;
+		return old;
+	}
+	const Fraction& operator--()
+	{
+		integer--;
+		return *this;
+	}
+	const Fraction operator--(int)
+	{
+		Fraction old = *this;
+		integer--;
+		return old;
+	}
 
 	//			Methods:
 	Fraction& to_improper()
@@ -177,7 +199,21 @@ bool operator<=(Fraction left, Fraction right)
 	return !(left > right);
 	//return left < right || left == right;
 }
+std::ostream& operator<<(std::ostream& os, const Fraction& obj)
+{
+	if (obj.get_integer())os << obj.get_integer();
+	if (obj.get_numerator())
+	{
+		if (obj.get_integer()) os << "(";
+		os << obj.get_numerator() << "/" << obj.get_denominator();
+		if (obj.get_integer())os << ")";
+	}
+	else if (obj.get_integer() == 0) os << 0;
+	return os;
+}
 //#define CONSTRUCTORS_CHECK
+//#define COMPARISON_OPERATORS
+//#define STREAMS_CHECK
 
 void main()
 {
@@ -206,6 +242,17 @@ void main()
 	Fraction C = A * B;
 	C.print();*/
 
+#ifdef COMPARISON_OPERATORS
 	cout << (2 == 3) << endl;
 	cout << (Fraction(1, 3) <= Fraction(5, 11)) << endl;
+#endif // COMPARISON_OPERATORS
+
+#ifdef STREAMS_CHECK
+
+	Fraction A(2, 3, 4);
+	cout << "Введите простую дробь: ";
+	cin >> A;
+	cout << A << endl;
+#endif // STREAMS_CHECK
+
 }
