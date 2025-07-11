@@ -307,8 +307,8 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 //#define STREAMS_CHECK
 //#define TYPE_CONVERSIONS_BASICS
 //#define CONVERSIONS_FROM_OTHER_TO_CLASS
-//#define CONVERSION_FROM_CLASS_TO_OTHER
-#define HAVE_A_NICE_DAY
+#define CONVERSION_FROM_CLASS_TO_OTHER
+//#define HAVE_A_NICE_DAY
 
 void main()
 {
