@@ -49,10 +49,19 @@ public:
 		this->denominator = 1;
 		cout << "SingleArgumentConstructor:" << this << endl;
 	}
-	/*explicit Fraction(double value)
+	Fraction(double decimal)
 	{
-		this->integer = value;
-		
+		//decimal - десятичная дробь
+		decimal += 1e-10;
+		integer = decimal;		//1) получаем целую часть дроби
+		decimal -= integer;		//2) убирем целую часть из десятичной дроби
+		denominator = 1e+9;		//3) получаем максимально возможный знаменатель
+		//1e+9 = 1000000000;
+		numerator = decimal * denominator;	//4) вытаскиваем дробную часть в числитель
+		reduce();
+		cout << "SingleArgumentConstructor:" << this << endl;
+		/*this->integer = value;
+
 		double fraction = value - this->integer;
 		numerator = fraction * 1000;
 		denominator = 1000;
@@ -61,19 +70,7 @@ public:
 
 		numerator /= GCD;
 		denominator /= GCD;
-		cout << "SingleArgumentConstructor:" << this << endl;
-	}*/
-	Fraction(double decimal)
-	{
-		//decimal - десятичная дробь
-		decimal += 1e-10;
-		integer = decimal;		//1) получаем целую часть дроби
-		decimal -= integer;		//2) убирем целую часть из десятичной дроби
-		denominator = 1e+9;		//3) получаем максимально возможный знаменатель
-								//1e+9 = 1000000000;
-		numerator = decimal * denominator;	//4) вытаскиваем дробную часть в числитель
-		reduce();
-		cout << "SingleArgumentConstructor:" << this << endl;
+		cout << "SingleArgumentConstructor:" << this << endl;*/
 	}
 	Fraction(int numerator, int denominator)
 	{
@@ -144,7 +141,7 @@ public:
 	{
 		return integer + (double)numerator / denominator;
 	}
-	
+
 	//				Methods:
 	Fraction& to_improper()
 	{
@@ -267,6 +264,30 @@ std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 }
 std::istream& operator>>(std::istream& is, Fraction& obj)
 {
+	const int SIZE = 256;	//размер буфера ввода.
+	char buffer[SIZE] = {};	//буфер ввода.
+	is.getline(buffer, SIZE);
+	int n = 0;	//количество введённых чисел
+	const char delimiters[] = "(/, )";
+	int numbers[3] = {};
+	for (
+		char* pch = strtok(buffer, delimiters);
+		pch && n < 3;
+		pch = strtok(NULL, delimiters)
+		)
+	{
+		numbers[n++] = atoi(pch);	//atoi() - ASCII-string to integer
+	}
+	//for (int i = 0; i < n; i++) cout << numbers[i] << "\t";
+	switch (n)
+	{
+	case 0: obj = Fraction(); break;
+	case 1: obj = Fraction(numbers[0]); break;
+	case 2: obj = Fraction(numbers[0], numbers[1]); break;
+	case 3: obj = Fraction(numbers[0], numbers[1], numbers[2]); break;
+	}
+	return is;
+	/*
 	int integer = 0, numerator = 0, denominator = 1;
 	char symbol;
 
@@ -294,7 +315,7 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 	obj.set_integer(integer);
 	obj.set_numerator(numerator);
 	obj.set_denominator(denominator);
-	return is;
+	return is;*/
 
 	/*is >> integer >> numerator >> denominator;
 	obj.set_integer(integer);
@@ -304,10 +325,10 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 }
 //#define CONSTRUCTORS_CHECK
 //#define COMPARISON_OPERATORS
-//#define STREAMS_CHECK
+#define STREAMS_CHECK
 //#define TYPE_CONVERSIONS_BASICS
 //#define CONVERSIONS_FROM_OTHER_TO_CLASS
-#define CONVERSION_FROM_CLASS_TO_OTHER
+//#define CONVERSION_FROM_CLASS_TO_OTHER
 //#define HAVE_A_NICE_DAY
 
 void main()
