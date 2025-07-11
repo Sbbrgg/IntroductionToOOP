@@ -49,7 +49,7 @@ public:
 		this->denominator = 1;
 		cout << "SingleArgumentConstructor:" << this << endl;
 	}
-	explicit Fraction(double value)
+	/*explicit Fraction(double value)
 	{
 		this->integer = value;
 		
@@ -61,6 +61,18 @@ public:
 
 		numerator /= GCD;
 		denominator /= GCD;
+		cout << "SingleArgumentConstructor:" << this << endl;
+	}*/
+	Fraction(double decimal)
+	{
+		//decimal - десятичная дробь
+		decimal += 1e-10;
+		integer = decimal;		//1) получаем целую часть дроби
+		decimal -= integer;		//2) убирем целую часть из десятичной дроби
+		denominator = 1e+9;		//3) получаем максимально возможный знаменатель
+								//1e+9 = 1000000000;
+		numerator = decimal * denominator;	//4) вытаскиваем дробную часть в числитель
+		reduce();
 		cout << "SingleArgumentConstructor:" << this << endl;
 	}
 	Fraction(int numerator, int denominator)
@@ -89,7 +101,7 @@ public:
 		cout << "Destructor:\t\t" << this << endl;
 	}
 
-	//			Operators:
+	//				Operators:
 	Fraction& operator=(const Fraction& other)
 	{
 		this->integer = other.integer;
@@ -296,7 +308,7 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 //#define TYPE_CONVERSIONS_BASICS
 //#define CONVERSIONS_FROM_OTHER_TO_CLASS
 //#define CONVERSION_FROM_CLASS_TO_OTHER
-//#define HAVE_A_NICE_DAY
+#define HAVE_A_NICE_DAY
 
 void main()
 {
@@ -368,7 +380,7 @@ void main()
 #endif // CONVERSION_FROM_CLASS_TO_OTHER
 
 #ifdef HAVE_A_NICE_DAY
-	Fraction A = (Fraction)2.75;
+	Fraction A = (Fraction)3.33;	//Conversion from double to 'Fraction'
 	cout << A << endl;
 #endif // HAVE_A_NICE_DAY
 
