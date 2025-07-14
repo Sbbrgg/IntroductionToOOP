@@ -43,7 +43,7 @@ public:
 	String(const String& other)
 	{
 		this->length = other.length;
-		str = new char[this->length] {};
+		str = new char[this->length + 1];
 		for (int i = 0; i <= this->length; i++)
 			str[i] = other.str[i];
 	}
