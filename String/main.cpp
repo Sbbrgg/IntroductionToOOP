@@ -14,6 +14,15 @@ public:
 	{
 		return str;
 	}
+	void set_length(int length)
+	{
+		this->length = length;
+	}
+	void set_str(char* str)
+	{
+		delete[] this->str;
+		this->str = str;
+	}
 
 	//				Constructors
 	String(int lenght = 0)
