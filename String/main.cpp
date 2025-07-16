@@ -1,105 +1,111 @@
 ﻿#include <iostream>
 using namespace std;
 
+#define delimiter "\n----------------------------------------------\n"
+
 class String
 {
-	int length;
-	char* str;
+	int size;	//размер строки в байтах(с учётом '\0' (NULL - Terminator))
+				//размер строки в символах без '\0'
+	char* str;	//адрес стркои в динамической памяти
 public:
-	int get_length()const
+	int get_size()const
 	{
-		return length;
+		return size;
 	}
-	char* get_str()const
+	const char* get_str()const
 	{
 		return str;
 	}
-	void set_length(int length)
+	char* get_str()
 	{
-		this->length = length;
-	}
-	void set_str(char* str)
-	{
-		delete[] this->str;
-		this->str = str;
+		return str;
 	}
 
-	//				Constructors
-	String(int lenght = 0)
+	//				Constructors:
+	explicit String(int size = 80)
 	{
-		this->length = lenght;
-		this->str = nullptr;
-		if (lenght > 0)
-		{
-			this->str = new char[lenght + 1] {};
-			str[lenght] = '\0';
-		}
+		//Конструктор по умолчанию создаёт пустую строку размером 80 байт
+		this->size = size;
+		this->str = new char[size] {};
+		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	String(const char* string)
+	String(const char* str)
 	{
-		this->length = 0;
-		this->str = nullptr;
-		while (string[length] != 0)
-			length++;
-		if (length > 0)
-		{
-			str = new char[length + 1];
-			for (int i = 0; i < length; i++)
-				this->str[i] = string[i];
-			this->str[length] = '\0';
-		}
+		this->size = strlen(str) + 1;	//'strlen()' возвращает размер строки в символах '+1' нужен, чтобы выделилась память под NULL-Terminated
+		this->str = new char[size] {};
+		for (int i = 0; i < size; i++)this->str[i] = str[i];
+		cout << "Constructor:\t\t" << this << endl;
 	}
 	String(const String& other)
 	{
-		this->length = other.length;
-		str = new char[this->length + 1];
-		for (int i = 0; i <= this->length; i++)
-			str[i] = other.str[i];
+		this->size = other.size;
+		//this->str = other.str;	//Shallow copy
+		//Deep copy:
+		this->str = new char[size] {};
+		for (int i = 0; i < size; i++)
+			this->str[i] = other.str[i];
+		cout << "CopyConstructor:\t" << this << endl;
 	}
 	~String()
 	{
 		delete[] str;
 		str = nullptr;
+		size = 0;
+		cout << "Destructor:\t\t" << this << endl;
 	}
-	//				Operators
-	String& operator=(const String& other)
+	//			Methods:
+	void print()const
 	{
-		length = other.length;
-		str = new char[length + 1] {};
-		for (int i = 0; i < length; i++)
-			str[i] = other.str[i];
-		return* this;
-	}
-	String operator+(const String& other)
-	{
-		String result;
-		result.length = this->length + other.length;
-		result.str = new char[strlen(this->str) + strlen(other.str) + 1];
-		for (int i = 0; i < strlen(this->str); i++)
-			result.str[i] = this->str[i];
-		for (int i = 0; i < strlen(other.str); i++)
-			result.str[this->length + i] = other.str[i];
-		result.str[result.length] = '\0';
-		return result;
+		cout << "Size:\t" << size << endl;
+		cout << "Str:\t" << str << endl;
 	}
 };
-	std::ostream& operator<<(std::ostream& os, const String& obj)
-	{
-		for (int i = 0; obj.get_str()[i] != '\0'; i++)
-			os << obj.get_str()[i];
-		return os;
-	}
+String operator+(const String& left, const String& right)
+{
+	String result(left.get_size() + right.get_size() - 1);
+	for (int i = 0; i < left.get_size(); i++)
+		result.get_str()[i] = left.get_str()[i];
+	for (int i = 0; i < right.get_size(); i++)
+		result.get_str()[left.get_size()+i-1] = right.get_str()[i];
+	return result;
+}
+std::ostream& operator<<(std::ostream& os, const String& obj)
+{
+	return os << obj.get_str();
+}
+void Clear(char* str)
+{
+	delete[] str;
+}
+
+//#define CONSTRUCTORS_CHECK
 
 void main()
 {
 	setlocale(LC_ALL, "");
-	String s1 = "Hello ";
-	String s2 = "World";
-	String s3 = s1 + s2;
+#ifdef CONSTRUCTORS_CHECK
+	String str1;
+	str1.print();
 
-	cout << s3 << endl; // Выведет "HelloWorld"
+	String str2(5);	//Conversion from 'int' to 'String'
+	str2.print();
 
-	String s4;
-	s4 = s1;
-	cout << s4 << endl; // Выведет "Hello"
+	String str3 = "Hello";
+	str3.print();
+	cout << str3 << endl;
+
+	String str4 = "World";
+	cout << str4 << endl;
+
+	cout << delimiter << endl;
+	String str5 = str3 + str4;
+	cout << delimiter << endl;
+	cout << str5 << endl;
+#endif // CONSTRUCTORS_CHECK
+	String str1 = "Hello";
+	cout << str1 << endl;
+
+	String str2 = str1;
+	cout << str2 << endl;
 }
