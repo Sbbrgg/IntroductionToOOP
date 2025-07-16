@@ -58,6 +58,7 @@ public:
 	}
 	String& operator=(const String& other)
 	{
+		if (this == &other)return*this;
 		delete[] this->str;
 		this->size = other.size;
 		this->str = new char[size] {};
@@ -65,6 +66,14 @@ public:
 			this->str[i] = other.str[i];
 		cout << "CopyAssignment:\t\t" << this << endl;
 		return *this;
+	}
+	char operator[](int i) const
+	{
+		return str[i];
+	}
+	char& operator[](int i) 
+	{
+		return str[i];
 	}
 	//			Methods:
 	void print()const
@@ -77,9 +86,11 @@ String operator+(const String& left, const String& right)
 {
 	String result(left.get_size() + right.get_size() - 1);
 	for (int i = 0; i < left.get_size(); i++)
-		result.get_str()[i] = left.get_str()[i];
+		result[i] = left[i];
+		//result.get_str()[i] = left.get_str()[i];
 	for (int i = 0; i < right.get_size(); i++)
-		result.get_str()[left.get_size()+i-1] = right.get_str()[i];
+		result[left.get_size()+i-1] = right[i];
+		//result.get_str()[left.get_size()+i-1] = right.get_str()[i];
 	return result;
 }
 std::ostream& operator<<(std::ostream& os, const String& obj)
@@ -91,7 +102,8 @@ void Clear(char* str)
 	delete[] str;
 }
 
-//#define CONSTRUCTORS_CHECK
+#define CONSTRUCTORS_CHECK
+//#define COPY_SEMANTIC_CHECK
 
 void main()
 {
@@ -115,10 +127,13 @@ void main()
 	cout << delimiter << endl;
 	cout << str5 << endl;
 #endif // CONSTRUCTORS_CHECK
+#ifdef COPY_SEMANTIC_CHECK
 	String str1 = "Hello";
 	cout << str1 << endl;
 
 	String str2;
 	str2 = str1;
 	cout << str2 << endl;
+#endif // COPY_SEMANTIC_CHECK
+
 }
