@@ -7,8 +7,7 @@ using std::endl;
 
 class String
 {
-	int size;	//размер строки в байтах(с учётом '\0' (NULL - Terminator))
-				//размер строки в символах без '\0'
+	int size;	//размер строки в байтах(с учётом '\0' (NULL - Terminator));;;;;;размер строки в символах без '\0'
 	char* str;	//адрес стркои в динамической памяти
 public:
 	int get_size()const
@@ -25,35 +24,36 @@ public:
 	}
 
 	//				Constructors:
-	explicit String(int size = 80)
+	explicit String(int size = 80) : size(size), str(new char[size] {})
 	{
 		//Конструктор по умолчанию создаёт пустую строку размером 80 байт
-		this->size = size;
-		this->str = new char[size] {};
+		//this->size = size;
+		//this->str = new char[size] {};
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	String(const char* str)
+	String(const char* str) : size(strlen(str) + 1), str(new char[size] {})
 	{
-		this->size = strlen(str) + 1;	//'strlen()' возвращает размер строки в символах '+1' нужен, чтобы выделилась память под NULL-Terminated
-		this->str = new char[size] {};
+		//this->size = strlen(str) + 1;	//'strlen()' возвращает размер строки в символах '+1' нужен, чтобы выделилась память под NULL-Terminated
+		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = str[i];
 		cout << "Constructor:\t\t" << this << endl;
 	}
-	String(const String& other)
+	String(const String& other): size(other.size), str(new char[size] {})
 	{
-		this->size = other.size;
-		//this->str = other.str;	//Shallow copy
+		//Shallow copy:
+		//this->str = other.str;	
 		//Deep copy:
-		this->str = new char[size] {};
+		//this->size = other.size;
+		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++)
 			this->str[i] = other.str[i];
 		cout << "CopyConstructor:\t" << this << endl;
 	}
-	String(String&& other)
+	String(String&& other) : size(other.size), str(other.str)
 	{
 		//MoveConstructor - ShallowCopy:
-		this->size = other.size;
-		this->str = other.str;
+		//this->size = other.size;
+		//this->str = other.str;
 		//Обнуляем принимаемый объект для того, чтобы предотвратить удаление его ресурсов деструктором
 		other.size = 0;
 		other.str = nullptr;
@@ -78,7 +78,7 @@ public:
 		cout << "CopyAssignment:\t\t" << this << endl;
 		return *this;
 	}
-	String& operator=(String&& other)
+	String& operator=(String&& other) 
 	{
 		//0) Проверка на не является ли 'this' и 'other' одним и тем же объектом:
 		if (this == &other) return *this;
@@ -104,8 +104,8 @@ public:
 	//			Methods:
 	void print()const
 	{
-		cout << "Size:\t\t\t" << size << endl;
-		cout << "Str:\t" << str << endl;
+		cout << "Size:\t\t" << size << endl;
+		cout << "Str:\t\t" << str << endl;
 	}
 };
 String operator+(const String& left, const String& right)
@@ -206,5 +206,8 @@ void main()
 	str10.print();
 
 	//!!! Фигурные скобки для вызова конструктора следует использовать с большой осторожностью
+
+	String str11 = str3 + str8;
+	str11.print();
 
 }
