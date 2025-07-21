@@ -1,4 +1,4 @@
-﻿#include"String.h"
+﻿#include"STR.h"
 void Clear(char* str)
 {
 	delete[] str;
